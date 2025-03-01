@@ -18,6 +18,20 @@ jobs:
         with:
           submodules: true
 
+      - name: Install Dependencies on Ubuntu
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential cmake git pkg-config \
+            libx11-dev libxrandr-dev libxi-dev libxinerama-dev libxcursor-dev \
+            libgl1-mesa-dev libglu1-mesa-dev libwayland-dev libwayland-bin zlib1g-dev
+
+      - name: Install Dependencies on macOS
+        if: runner.os == 'macOS'
+        run: |
+          brew update
+          brew install cmake
+
       - name: Configure CMakeLists.txt
         run: |
           mkdir build
@@ -26,4 +40,5 @@ jobs:
 
       - name: Build
         run: |
+          cd build
           cmake --build . --config Release
